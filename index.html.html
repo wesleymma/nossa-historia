@@ -1,0 +1,350 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nossa História - Para Sempre Nós</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #fdfaf6;
+            --accent: #b8916a;
+            --text: #2c2c2c;
+            --white: #ffffff;
+            --soft-rose: #f4e7e7;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* 1. ANIMAÇÃO DE CORAÇÕES AO ROLAR */
+        .falling-heart {
+            position: fixed;
+            top: -30px;
+            pointer-events: none;
+            z-index: 9999;
+            animation: fall linear forwards;
+            opacity: 0.6;
+        }
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+
+        /* 2. CARD DE BOAS-VINDAS (UX PREMIUM) */
+        #welcome-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg);
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1s ease-in-out, visibility 1s;
+        }
+        .welcome-card {
+            width: 300px;
+            cursor: pointer;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
+        }
+        .welcome-card:hover { transform: scale(1.1); }
+        .hidden { opacity: 0; visibility: hidden; }
+
+        /* 3. HERO SECTION & CONTADOR */
+        header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 10vw, 6rem);
+            color: var(--text);
+            margin-bottom: 20px;
+        }
+        .date-label {
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            color: var(--accent);
+            margin-bottom: 30px;
+        }
+        .counter-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            width: 90%;
+            max-width: 800px;
+        }
+        .counter-box {
+            background: var(--white);
+            padding: 30px 10px;
+            border-radius: 4px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+            border: 1px solid var(--soft-rose);
+        }
+        .counter-box span {
+            display: block;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.5rem, 5vw, 3rem);
+            color: var(--accent);
+        }
+        .counter-box label {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.6;
+        }
+
+        /* 4. SEÇÃO RASPADINHA (LEGO) */
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            text-align: center;
+            margin: 80px 0 40px;
+        }
+        .scratch-outer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 0;
+        }
+        .scratch-container {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            border: 12px solid white;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        #canvas {
+            position: absolute;
+            top: 0; left: 0;
+            z-index: 2;
+            cursor: crosshair;
+            touch-action: none;
+        }
+        .scratch-under {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1;
+        }
+        .scratch-under img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* 5. MURAL DE MOTIVOS */
+        .mural {
+            max-width: 800px;
+            margin: 0 auto 100px;
+            padding: 20px;
+            display: grid;
+            gap: 20px;
+        }
+        .reason-card {
+            background: var(--white);
+            padding: 30px;
+            border-left: 5px solid var(--accent);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+            transition: 0.3s;
+        }
+        .reason-card:hover { transform: translateX(10px); }
+
+        /* 6. GALERIA (CORREÇÃO DE CORTE) */
+        .gallery {
+            max-width: 1200px;
+            margin: 0 auto 100px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            padding: 20px;
+        }
+        .photo-frame {
+            background: white;
+            padding: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+        }
+        .photo-frame img {
+            width: 100%;
+            height: 450px;
+            object-fit: contain; /* GARANTE QUE NÃO CORTE */
+            background: #f9f9f9;
+        }
+        .caption {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            margin-top: 15px;
+            text-align: center;
+            color: var(--accent);
+        }
+
+        /* SPOTIFY */
+        .spotify-box {
+            max-width: 800px;
+            margin: 0 auto 100px;
+            width: 90%;
+        }
+
+        footer {
+            padding: 60px;
+            text-align: center;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            opacity: 0.5;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 600px) {
+            .scratch-container { width: 300px; height: 300px; }
+            #canvas { width: 300px; height: 300px; }
+            .counter-container { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CARD DE ENTRADA -->
+    <div id="welcome-overlay" onclick="startApp()">
+        <img src="foto8.jpg" class="welcome-card" alt="Nosso Card">
+        <p style="margin-top: 30px; letter-spacing: 5px; font-size: 0.7rem;">CLIQUE PARA ENTRAR NO NOSSO MUNDO</p>
+    </div>
+
+    <header>
+        <div class="date-label">Desde 09 de Agosto de 2022</div>
+        <h1>Para Sempre Nós</h1>
+        <div class="counter-container">
+            <div class="counter-box"><span id="dias">0</span><label>Dias</label></div>
+            <div class="counter-box"><span id="horas">00</span><label>Horas</label></div>
+            <div class="counter-box"><span id="minutos">00</span><label>Mins</label></div>
+            <div class="counter-box"><span id="segundos">00</span><label>Segs</label></div>
+        </div>
+    </header>
+
+    <section class="scratch-outer">
+        <h2 class="section-title">Nossa Versão Especial</h2>
+        <p style="margin-bottom: 20px; opacity: 0.7;">Raspe para descobrir uma surpresa...</p>
+        <div class="scratch-container">
+            <div class="scratch-under">
+                <img src="foto7.png" alt="Lego Us">
+            </div>
+            <canvas id="canvas" width="400" height="400"></canvas>
+        </div>
+        <p class="caption" style="margin-top: 20px;">"Não somos fofos como Ogros?"</p>
+    </section>
+
+    <h2 class="section-title">Por que você?</h2>
+    <section class="mural">
+        <div class="reason-card"><strong>Seu Sorriso:</strong> O jeito como ele ilumina o ambiente e melhora meu dia instantaneamente.</div>
+        <div class="reason-card"><strong>Sua Voz:</strong> Como você sempre sabe exatamente o que dizer quando estou triste.</div>
+        <div class="reason-card"><strong>Seu Humor:</strong> Seu lado brincalhão que me faz rir mesmo nos dias difíceis.</div>
+        <div class="reason-card"><strong>Sua Essência:</strong> Você ser exatamente quem você é me inspira todos os dias.</div>
+    </section>
+
+    <h2 class="section-title">Nossas Memórias</h2>
+    <section class="gallery">
+        <div class="photo-frame"><img src="foto1.jpg"><div class="caption">Cada momento ao seu lado...</div></div>
+        <div class="photo-frame"><img src="foto2.jpg"><div class="caption">...é um novo motivo para sorrir.</div></div>
+        <div class="photo-frame"><img src="foto3.jpg"><div class="caption">Nossas viagens e planos.</div></div>
+        <div class="photo-frame"><img src="foto4.jpg"><div class="caption">Onde a gente se encontra.</div></div>
+        <div class="photo-frame"><img src="foto5.jpg"><div class="caption">O abraço que é meu lar.</div></div>
+        <div class="photo-frame"><img src="foto6.jpg"><div class="caption">Para todo o sempre.</div></div>
+    </section>
+
+    <h2 class="section-title">Nossa Trilha</h2>
+    <div class="spotify-box">
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1E8O6vOonm575m?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+
+    <footer>
+        Com todo o meu amor • 2022 - 2026
+    </footer>
+
+    <script>
+        // 1. INICIAR SITE
+        function startApp() {
+            document.getElementById('welcome-overlay').classList.add('hidden');
+        }
+
+        // 2. CHUVA DE CORAÇÕES AO ROLAR
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            let current = window.pageYOffset;
+            if (Math.abs(current - lastScroll) > 20) {
+                const heart = document.createElement('div');
+                heart.className = 'falling-heart';
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 5000);
+                lastScroll = current;
+            }
+        });
+
+        // 3. CONTADOR EM TEMPO REAL
+        const startDate = new Date(2022, 7, 9, 0, 0, 0); 
+        function updateCounter() {
+            const now = new Date();
+            const diff = now - startDate;
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const m = Math.floor((diff / 1000 / 60) % 60);
+            const s = Math.floor((diff / 1000) % 60);
+            document.getElementById('dias').innerText = d;
+            document.getElementById('horas').innerText = h.toString().padStart(2, '0');
+            document.getElementById('minutos').innerText = m.toString().padStart(2, '0');
+            document.getElementById('segundos').innerText = s.toString().padStart(2, '0');
+        }
+        setInterval(updateCounter, 1000);
+        updateCounter();
+
+        // 4. RASPADINHA MELHORADA
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let isDrawing = false;
+
+        function initScratch() {
+            ctx.fillStyle = '#b8916a';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 20px Montserrat';
+            ctx.textAlign = 'center';
+            ctx.fillText('RASPE AQUI ✨', canvas.width/2, canvas.height/2 + 10);
+        }
+
+        function handleScratch(e) {
+            if (!isDrawing) return;
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX || e.touches[0].clientX) - rect.left;
+            const y = (e.clientY || e.touches[0].clientY) - rect.top;
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.beginPath();
+            ctx.arc(x, y, 35, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        canvas.addEventListener('mousedown', () => isDrawing = true);
+        canvas.addEventListener('touchstart', () => isDrawing = true);
+        window.addEventListener('mouseup', () => isDrawing = false);
+        window.addEventListener('touchend', () => isDrawing = false);
+        canvas.addEventListener('mousemove', handleScratch);
+        canvas.addEventListener('touchmove', (e) => { e.preventDefault(); handleScratch(e); }, {passive: false});
+
+        initScratch();
+    </script>
+</body>
+</html>
